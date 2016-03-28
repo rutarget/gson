@@ -18,6 +18,7 @@ package com.google.gson.stream;
 
 import com.google.gson.internal.JsonReaderInternalAccess;
 import com.google.gson.internal.bind.JsonTreeReader;
+
 import java.io.Closeable;
 import java.io.EOFException;
 import java.io.IOException;
@@ -235,7 +236,7 @@ public class JsonReader implements Closeable {
    * We decode literals directly out of this buffer, so it must be at least as
    * long as the longest token that can be reported as a number.
    */
-  private final char[] buffer = new char[1024];
+  private final char[] buffer;
   private int pos = 0;
   private int limit = 0;
 
@@ -266,11 +267,8 @@ public class JsonReader implements Closeable {
   /*
    * The nesting stack. Using a manual array rather than an ArrayList saves 20%.
    */
-  private int[] stack = new int[32];
+  private int[] stack;
   private int stackSize = 0;
-  {
-    stack[stackSize++] = JsonScope.EMPTY_DOCUMENT;
-  }
 
   /*
    * The path members. It corresponds directly to stack: At indices where the
@@ -280,17 +278,27 @@ public class JsonReader implements Closeable {
    * that array. Otherwise the value is undefined, and we take advantage of that
    * by incrementing pathIndices when doing so isn't useful.
    */
-  private String[] pathNames = new String[32];
-  private int[] pathIndices = new int[32];
+  private String[] pathNames;
+  private int[] pathIndices;
 
   /**
    * Creates a new instance that reads a JSON-encoded stream from {@code in}.
    */
   public JsonReader(Reader in) {
+    this(in, 1024, 32);
+  }
+
+  public JsonReader(Reader in, int bufferSize, int defaultStackSize) {
     if (in == null) {
       throw new NullPointerException("in == null");
     }
     this.in = in;
+    this.buffer = new char[bufferSize];
+    this.stack = new int[defaultStackSize];
+    this.pathNames = new String[defaultStackSize];
+    this.pathIndices = new int[defaultStackSize];
+
+    stack[stackSize++] = JsonScope.EMPTY_DOCUMENT;
   }
 
   /**

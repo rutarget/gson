@@ -54,6 +54,11 @@ public final class JsonTreeReader extends JsonReader {
     stack.add(element);
   }
 
+  public JsonTreeReader(JsonElement element, int bufferSize, int defaultStackSize) {
+    super(UNREADABLE_READER, bufferSize, defaultStackSize);
+    stack.add(element);
+  }
+
   @Override public void beginArray() throws IOException {
     expect(JsonToken.BEGIN_ARRAY);
     JsonArray array = (JsonArray) peekStack();
