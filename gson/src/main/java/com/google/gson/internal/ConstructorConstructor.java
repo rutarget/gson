@@ -84,6 +84,10 @@ public final class ConstructorConstructor {
 
   private <T> ObjectConstructor<T> newDefaultConstructor(Class<? super T> rawType) {
     try {
+      if (rawType.isInterface()) {
+        return null;
+      }
+
       final Constructor<? super T> constructor = rawType.getDeclaredConstructor();
       if (!constructor.isAccessible()) {
         constructor.setAccessible(true);
