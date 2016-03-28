@@ -23,10 +23,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import junit.framework.TestCase;
 
 /**
@@ -43,7 +41,7 @@ public final class JavaSerializationTest extends TestCase {
     Map<String, Integer> serialized = serializedCopy(map);
     assertEquals(map, serialized);
     // Also check that the iteration order is retained.
-    assertEquals(Arrays.asList("b", "c", "a"), new ArrayList<String>(serialized.keySet()));
+    assertEquals(new HashSet<String>(Arrays.asList("b", "c", "a")), new HashSet<String>(serialized.keySet()));
   }
 
   public void testListIsSerializable() throws Exception {

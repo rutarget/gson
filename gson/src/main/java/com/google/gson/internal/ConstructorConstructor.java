@@ -20,19 +20,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentNavigableMap;
@@ -157,7 +145,7 @@ public final class ConstructorConstructor {
       } else if (Set.class.isAssignableFrom(rawType)) {
         return new ObjectConstructor<T>() {
           @Override public T construct() {
-            return (T) new LinkedHashSet<Object>();
+            return (T) new HashSet<Object>();
           }
         };
       } else if (Queue.class.isAssignableFrom(rawType)) {
@@ -198,13 +186,13 @@ public final class ConstructorConstructor {
           TypeToken.get(((ParameterizedType) type).getActualTypeArguments()[0]).getRawType()))) {
         return new ObjectConstructor<T>() {
           @Override public T construct() {
-            return (T) new LinkedHashMap<Object, Object>();
+            return (T) new HashMap<Object, Object>();
           }
         };
       } else {
         return new ObjectConstructor<T>() {
           @Override public T construct() {
-            return (T) new LinkedTreeMap<String, Object>();
+            return (T) new HashMap<String, Object>();
           }
         };
       }
